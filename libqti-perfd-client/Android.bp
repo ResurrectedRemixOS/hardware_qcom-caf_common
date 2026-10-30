@@ -19,4 +19,9 @@ cc_library_shared {
         "-Wno-unused-variable",
     ],
     vendor: true,
+    // Dodge installs the stock client under the same file name.
+    enabled: select(soong_config_variable("qti_perfd", "use_stock_client"), {
+        true: false,
+        default: true,
+    }),
 }
