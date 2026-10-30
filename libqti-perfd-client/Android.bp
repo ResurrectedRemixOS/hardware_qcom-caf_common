@@ -7,7 +7,15 @@
 soong_namespace {
 }
 
-cc_library_shared {
+soong_config_module_type {
+    name: "qti_perfd_client_cc_library_shared",
+    module_type: "cc_library_shared",
+    config_namespace: "qti_perfd",
+    bool_variables: ["use_stock_client"],
+    properties: ["enabled"],
+}
+
+qti_perfd_client_cc_library_shared {
     name: "libqti-perfd-client",
     srcs: ["client.c"],
     shared_libs: [
@@ -20,8 +28,9 @@ cc_library_shared {
     ],
     vendor: true,
     // Dodge installs the stock client under the same file name.
-    enabled: select(soong_config_variable("qti_perfd", "use_stock_client"), {
-        true: false,
-        default: true,
-    }),
+    soong_config_variables: {
+        use_stock_client: {
+            enabled: false,
+        },
+    },
 }
